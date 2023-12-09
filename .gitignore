@@ -9,7 +9,7 @@ dist/
 web-build/
 
 #Secret
-./constants/Secret.ts
+constants/Secret.ts
 
 
 # Native
