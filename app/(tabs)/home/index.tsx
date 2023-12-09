@@ -1,7 +1,7 @@
 import { Button, StyleSheet } from "react-native";
-import { Text, View } from "../../components/Themed";
+import { Text, View } from "../../../components/Themed";
 
-export default function TabOneScreen() {
+export default function HomePage() {
   return (
     <View style={styles.container}>
       <Text style={{ marginTop: 30 }}>Tab One</Text>
