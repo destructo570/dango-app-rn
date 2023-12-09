@@ -1,12 +1,16 @@
-import React, { useReducer } from "react";
+import React, { useReducer, FC, PropsWithChildren } from "react";
 
-export default (reducer, actions, defaultValue) => {
+interface BoundActions {
+  [key: string]: Function;
+}
+
+export default (reducer: any, actions: any, defaultValue: any) => {
   const Context = React.createContext(defaultValue);
 
-  const Provider = ({ children }) => {
+  const Provider: FC<PropsWithChildren> = (props) => {
     const [state, dispatch] = useReducer(reducer, defaultValue);
 
-    const boundActions = {};
+    const boundActions: BoundActions = {};
 
     for (let key in actions) {
       boundActions[key] = actions[key](dispatch);
@@ -14,7 +18,7 @@ export default (reducer, actions, defaultValue) => {
 
     return (
       <Context.Provider value={{ state, ...boundActions }}>
-        {children}
+        {props?.children}
       </Context.Provider>
     );
   };

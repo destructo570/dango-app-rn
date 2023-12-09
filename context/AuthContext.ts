@@ -3,31 +3,60 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import createDataContext from "./createDataContext";
 import { router } from "expo-router";
 import { ROUTES } from "../constants/Routes";
+import { REDUCER_ACTION } from "../constants/constants";
 
-const initial_state = { token: "", refreshToken: "", error: "", expiresIn: "" };
+export interface AuthState {
+  token?: string;
+  refreshToken?: string;
+  error?: string;
+  expiresIn?: string;
+}
 
-const authReducer = (state, action) => {
+type ACTION_TYPE = "auth_success" | "auth_error" | "auth_logout";
+
+type AnyProps = {
+  [key: string]: any;
+};
+
+export interface AuthAction {
+  type: ACTION_TYPE;
+  payload: AnyProps;
+}
+export interface TokenResponse {
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+}
+
+const initial_state: AuthState = {
+  token: "",
+  refreshToken: "",
+  error: "",
+  expiresIn: "",
+};
+
+const authReducer = (state: AuthState, action: AuthAction) => {
   switch (action.type) {
-    case "auth_success":
+    case REDUCER_ACTION.AUTH_SUCCESS:
       return {
         ...state,
         token: action?.payload?.access_token,
         refreshToken: action?.payload?.refresh_token,
         expiresIn: `${action?.payload?.expires_in}`,
       };
-    case "auth_error":
+    case REDUCER_ACTION.AUTH_ERROR:
       return { ...state, error: action.payload };
-    case "auth_logout":
+    case REDUCER_ACTION.AUTH_LOGOUT:
       return { ...initial_state };
     default:
       return state;
   }
 };
 
-const login = (dispatch) => {
-  return async ({ authCode }) => {
+const login = (dispatch: Function) => {
+  return async ({ authCode }: { authCode: string }) => {
     //Make API call with the auth code to get the token
-    const response = await getAuthToken(authCode);
+    const response: any = await getAuthToken(authCode);
 
     if (response && response.status === 200 && response?.data) {
       await AsyncStorage.setItem("token", response?.data?.access_token);
@@ -41,25 +70,29 @@ const login = (dispatch) => {
   };
 };
 
-const loginLocally = (dispatch) => {
+const loginLocally = (dispatch: Function) => {
   return async () => {
     //Make API call with the auth code to get the token
-    const payload = { ...initial_state };
+    const payload = {
+      access_token: "",
+      refresh_token: "",
+      expires_in: "",
+    };
 
-    payload.token = (await AsyncStorage.getItem("token")) || "";
-    payload.refreshToken = (await AsyncStorage.getItem("refreshToken")) || "";
-    payload.expiresIn = (await AsyncStorage.getItem("expiresIn")) || "";
-    if(payload.token){
+    payload.access_token = (await AsyncStorage.getItem("token")) || "";
+    payload.refresh_token = (await AsyncStorage.getItem("refreshToken")) || "";
+    payload.expires_in = (await AsyncStorage.getItem("expiresIn")) || "";
+
+    if (payload.access_token) {
       dispatch({ type: "auth_success", payload });
       router.replace(ROUTES.HOME);
-    }else{
+    } else {
       router.replace(ROUTES.LOGIN);
     }
-
   };
 };
 
-const logout = (dispatch) => {
+const logout = (dispatch: Function) => {
   //Clear login state
   return () => {
     dispatch({ type: "auth_logout" });

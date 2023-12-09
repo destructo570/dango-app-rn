@@ -1,28 +1,28 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Button, StyleSheet } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
-import { Text, View } from "../components/Themed";
-import { CONFIG } from "../constants/Secret";
+import { View } from "../components/Themed";
+import { AUTH_CONFIG } from "../constants/Secret";
 import { getAuthCodeFromEvent } from "../utils/utils";
 import { Context as AuthContext } from "../context/AuthContext";
-import Constants from 'expo-constants';
+import Constants from "expo-constants";
 
 export default function LoginPage() {
   const { login } = useContext(AuthContext);
 
-  useEffect (() => {
-    const subscription = Linking.addEventListener('url', _handleRedirect);
+  useEffect(() => {
+    const subscription = Linking.addEventListener("url", _handleRedirect);
     return () => subscription.remove();
-  }, [])
+  }, []);
 
   const onPressHandler = async () => {
-    await WebBrowser.openBrowserAsync(CONFIG.AUTH_URL_2);
+    await WebBrowser.openBrowserAsync(AUTH_CONFIG.AUTH_URL);
   };
 
-  const _handleRedirect = (event) => {
+  const _handleRedirect = (event: RedirectEvent) => {
     if (Constants?.platform?.ios) {
-        WebBrowser.dismissBrowser();
+      WebBrowser.dismissBrowser();
     }
     if (event) {
       const authCode = getAuthCodeFromEvent(event);

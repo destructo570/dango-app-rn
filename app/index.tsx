@@ -6,9 +6,9 @@ import { Context as AuthContext } from "../context/AuthContext";
 export default function ResolveAuthScreen() {
   const { loginLocally } = useContext(AuthContext);
 
-  useEffect (() => {
+  useEffect(() => {
     loginLocally();
-  }, [])
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -1,0 +1,3 @@
+interface RedirectEvent {
+  url?: string;
+}

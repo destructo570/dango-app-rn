@@ -6,10 +6,9 @@ import {
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { Provider as AuthProvider } from "../context/AuthContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export {
   // Catch any errors thrown by the Layout component.
