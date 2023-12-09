@@ -1,68 +1,54 @@
-import { Button, StyleSheet } from "react-native";
-import axios from 'axios';
-import EditScreenInfo from "../../components/EditScreenInfo";
-import { Text, View } from "../../components/Themed";
-import * as Linking from "expo-linking";
-import { CONFIG } from "../../constants/Secret";
-import * as WebBrowser from "expo-web-browser";
 import { useEffect, useState } from "react";
-import URLParse from 'url-parse';
+import axios from "axios";
+import URLParse from "url-parse";
+import { Button, StyleSheet } from "react-native";
+import * as WebBrowser from "expo-web-browser";
+import * as Linking from "expo-linking";
+import { Text, View } from "../components/Themed";
+import { CONFIG } from "../constants/Secret";
 
-export default function TabOneScreen() {
+export default function LoginPage() {
   const [auth_state, setAuthState] = useState(null);
   const [token, setToken] = useState(null);
 
-  useEffect(()=>{
-    if(auth_state){
+  useEffect(() => {
+    if (auth_state) {
       const parsedUrl = new URLParse(auth_state?.event?.url, true);
       const codeValue = parsedUrl.query.code;
       getAuthToken(codeValue);
     }
-  }, [auth_state])
+  }, [auth_state]);
 
-  const getAuthToken = async (code)=>{
-    console.log(code);
-    
-    try{
-      // const response = await axios.post('https://anilist.co/api/v2/oauth/token', {
-      //   'grant_type': 'authorization_code',
-      //   'client_id': CONFIG.CLIENT_ID,
-      //   'client_secret': CONFIG.SECRET,
-      //   'redirect_uri': CONFIG.REDIRECT_URI, // http://example.com/callback
-      //   'code': code, // The Authorization Code received previously
-      // }, { headers: {
-      //   'Content-Type': 'application/json',
-      //   'Accept': 'application/json',
-      // }});
-
+  const getAuthToken = async (code) => {
+    try {
       const postData = {
-        grant_type: 'authorization_code',
+        grant_type: "authorization_code",
         client_id: CONFIG.CLIENT_ID,
         client_secret: CONFIG.SECRET,
         redirect_uri: "com.destructo570.dangoapprn://oauth", // http://example.com/callback
         code: code, // The Authorization Code received previously
       };
-      
+
       const config = {
         headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
       };
-      
-      const response = await axios.post('https://anilist.co/api/v2/oauth/token', postData, config)
-  
-      if(response && response.status === 200){
-        console.log(response);
+
+      const response = await axios.post(
+        "https://anilist.co/api/v2/oauth/token",
+        postData,
+        config
+      );
+
+      if (response && response.status === 200) {
         setToken(response);
       }
-
-    }catch(err){
-      console.log(err); 
+    } catch (err) {
+      console.log(err);
     }
-
-
-  }
+  };
   const onPressHandler = async () => {
     _addLinkingListener();
 
@@ -84,9 +70,8 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
-      <Button title="Login with Anilist" onPress={onPressHandler} />
-      {/* <Text style={{ marginTop: 30 }}>{JSON.stringify(auth_state)}</Text> */}
       <Text style={{ marginTop: 30 }}>{JSON.stringify(token)}</Text>
+      <Button title="Login with Anilist" onPress={onPressHandler} />
     </View>
   );
 }
