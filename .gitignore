@@ -8,6 +8,10 @@ node_modules/
 dist/
 web-build/
 
+#Secret
+./constants/Secret.ts
+
+
 # Native
 *.orig.*
 *.jks
