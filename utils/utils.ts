@@ -7,3 +7,12 @@ export const getAuthCodeFromEvent = (auth_state: { url?: string }) => {
   }
   return "";
 };
+
+export const getSettingsObject = (keyValuePairs)=>{
+  const settings = {};
+  keyValuePairs.forEach(pair => {
+    let [key, value] = pair;
+    settings[key] = value;
+  });
+  return settings;
+}

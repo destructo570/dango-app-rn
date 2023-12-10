@@ -1,20 +1,34 @@
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Platform, StyleSheet } from "react-native";
-import { Text, View } from "react-native-ui-lib";
+import { Text, View } from "../../../components/Themed";
+import { SETTINGS_KEYS } from "../../../constants/constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Switch } from "react-native-ui-lib";
+import { Context as SettingsContext } from "../../../context/SettingsContext";
+import { getSettingsObject } from "../../../utils/utils";
 
-export default function SettingsModal({ navigation }) {
+export default function SettingsModal() {
+  const { updateSettings, state } = useContext(SettingsContext);
 
-  useEffect(() => {
-    navigation?.setOptions({
-      title: 'Nested Screen Title', // Set the nested screen's title dynamically
+  const onToggleDarkMode = () => {
+    updateSettings({
+      key: SETTINGS_KEYS.IS_DARK,
+      value: state.isDark === "true" ? false : true,
     });
-  }, [navigation]);
+  };
+  
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hello Worlds</Text>
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      {/* <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} /> */}
+      <View row marginB-20 gap={10}>
+        <Text text70 centerV>
+          Dark mode
+        </Text>
+        <Switch
+          value={state?.isDark === "true"}
+          onValueChange={onToggleDarkMode}
+        />
+      </View>
     </View>
   );
 }

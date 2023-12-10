@@ -1,22 +1,23 @@
-require('react-native-ui-lib/config').setConfig({appScheme: 'default'});
+require("react-native-ui-lib/config").setConfig({ appScheme: "default" });
 import { useContext, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { Colors as MyTheme, Text, View } from "react-native-ui-lib";
 import Colors from "../constants/Colors";
 import { Context as AuthContext } from "../context/AuthContext";
+import { Context as SettingsContext } from "../context/SettingsContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ResolveAuthScreen() {
   const { loginLocally } = useContext(AuthContext);
-
+  const { initializeSettings } = useContext(SettingsContext);
   useEffect(() => {
-    setDefaultTheme();
+    initializeSettings();
     loginLocally();
   }, []);
 
   const setDefaultTheme = async () => {
-    await AsyncStorage.setItem('theme', 'dark');
-  }
+    await AsyncStorage.setItem("theme", "dark");
+  };
 
   MyTheme.loadSchemes(Colors);
 

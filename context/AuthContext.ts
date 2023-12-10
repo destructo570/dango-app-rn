@@ -4,6 +4,7 @@ import createDataContext from "./createDataContext";
 import { router } from "expo-router";
 import { ROUTES } from "../constants/Routes";
 import { REDUCER_ACTION } from "../constants/constants";
+import { AnyProps } from "../types/AnyProps";
 
 export interface AuthState {
   token?: string;
@@ -13,10 +14,6 @@ export interface AuthState {
 }
 
 type ACTION_TYPE = "auth_success" | "auth_error" | "auth_logout";
-
-type AnyProps = {
-  [key: string]: any;
-};
 
 export interface AuthAction {
   type: ACTION_TYPE;
