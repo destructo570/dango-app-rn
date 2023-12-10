@@ -1,7 +1,9 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 import { useColorScheme } from "react-native";
-
+import { Ionicons } from "@expo/vector-icons";
+import { Link } from "expo-router";
+import { Pressable } from "react-native";
 import Colors from "../../constants/Colors";
 
 /**
@@ -56,6 +58,20 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerRight: () => (
+            <Link href="/(tabs)/profile/settings" asChild>
+              <Pressable>
+                {({ pressed }) => (
+                  <Ionicons
+                    name="settings-sharp"
+                    size={24}
+                    color={"#ffffff"}
+                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  />
+                )}
+              </Pressable>
+            </Link>
+          ),
         }}
       />
     </Tabs>

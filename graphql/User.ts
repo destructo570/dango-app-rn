@@ -1,10 +1,13 @@
-export const ANILIST_QUERY = {
-  USER_PROFILE: `query {
+export const USER_QUERY = {
+  PROFILE: `query {
         Viewer {
           id
           name
           about
-          avatar
+          avatar {
+            large
+            medium
+          }
           bannerImage
           isFollowing
           isFollower
