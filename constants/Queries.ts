@@ -3,7 +3,13 @@ export const ANILIST_QUERY = {
         Viewer {
           id
           name
+          about
+          avatar
           bannerImage
-        }
+          isFollowing
+          isFollower
+          isBlocked
+          createdAt
+      }
       }`,
 };

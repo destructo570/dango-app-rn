@@ -82,7 +82,7 @@ const loginLocally = (dispatch: Function) => {
     payload.access_token = (await AsyncStorage.getItem("token")) || "";
     payload.refresh_token = (await AsyncStorage.getItem("refreshToken")) || "";
     payload.expires_in = (await AsyncStorage.getItem("expiresIn")) || "";
-
+    
     if (payload.access_token) {
       dispatch({ type: "auth_success", payload });
       router.replace(ROUTES.HOME);

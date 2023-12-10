@@ -2,16 +2,26 @@ import axios, { AxiosRequestConfig } from "axios";
 import { AUTH_CONFIG } from "../constants/Secret";
 import { ANILIST_QUERY as query } from "../constants/Queries";
 import { TokenResponse } from "../context/AuthContext";
+import sleep from "sleep-promise";
+import { anilistApi } from "./api";
 
-const getReqConfig = (token?: string): AxiosRequestConfig => {
+const getReqConfig = (): AxiosRequestConfig => {
   const headers = {
     "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "",
+    Accept: "application/json",
   };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
   return { headers };
 };
+
+// const getReqConfig = (token?: string): AxiosRequestConfig => {
+//   const headers = {
+//     "Content-Type": "application/json",
+//     Accept: "application/json",
+//     Authorization: "",
+//   };
+//   if (token) headers["Authorization"] = `Bearer ${token}`;
+//   return { headers };
+// };
 
 export const getAuthToken = async (authCode: string) => {
   try {
@@ -34,22 +44,46 @@ export const getAuthToken = async (authCode: string) => {
   }
 };
 
-export const getProfileInfo = async (token: string) => {
+export const getProfileInfo = async () => {
+  // await sleep(2000);
+  const postData = {
+    query: query.USER_PROFILE,
+    variables: "",
+  };
   try {
-    const postData = {
-      query: query.USER_PROFILE,
-      variables: "",
-    };
-
-    const response = await axios.post(
+    const response = await anilistApi.post(
       "https://graphql.anilist.co",
-      JSON.stringify(postData),
-      getReqConfig(token)
+      JSON.stringify(postData)
     );
-      console.log("Response", response);
-      
+    console.log("response", response);
     return response;
+    
   } catch (err) {
+    console.log("err", err);
     return err;
   }
 };
+
+// export const getProfileInfo2 = async (token: string) => {
+//   console.log("token", token);
+
+//   try {
+//     const postData = {
+//       query: query.USER_PROFILE,
+//       variables: "",
+//     };
+//     const config = getReqConfig(token);
+//     console.log(config);
+
+//     const response = await axios.post(
+//       "https://graphql.anilist.co",
+//       JSON.stringify(postData),
+//       config
+//     );
+//       console.log("Response", response);
+
+//     return response;
+//   } catch (err) {
+//     return err;
+//   }
+// };

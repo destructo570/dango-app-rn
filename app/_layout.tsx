@@ -9,6 +9,11 @@ import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { Provider as AuthProvider } from "../context/AuthContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const queryClient = new QueryClient()
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -30,6 +35,7 @@ export default function RootLayout() {
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
+
   useEffect(() => {
     if (error) throw error;
   }, [error]);
@@ -55,12 +61,13 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <QueryClientProvider client={queryClient}>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       </Stack>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }
