@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { Button, StyleSheet } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
-import { View } from "../components/Themed";
+import { View } from "react-native-ui-lib";
 import { AUTH_CONFIG } from "../constants/Secret";
 import { getAuthCodeFromEvent } from "../utils/utils";
 import { Context as AuthContext } from "../context/AuthContext";

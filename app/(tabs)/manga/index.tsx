@@ -1,5 +1,5 @@
 import { Button, StyleSheet } from "react-native";
-import { Text, View } from "../../../components/Themed";
+import { Text, View } from "react-native-ui-lib";
 
 export default function MangaPage() {
   return (
